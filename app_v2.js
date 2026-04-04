@@ -2,7 +2,7 @@
  * AI Fortune App Main Scripts
  */
 
-const API_KEY = "AIzaSyBTKDtIvroEL3d5kMWdvBvVYN-1YFb9QKM";
+const API_KEY = "AIzaSyAjWn2EYuE6aDXLnqQarEeqE13zShHkcE8";
 const MODEL_NAME = "gemini-2.5-flash";
 
 class FortuneApp {

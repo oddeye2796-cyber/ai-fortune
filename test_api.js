@@ -1,7 +1,6 @@
 const https = require('https');
 
-// gemini-2.5-flash (2026년 기준 최신형)
-const API_KEY = "AIzaSyBTKDtIvroEL3d5kMWdvBvVYN-1YFb9QKM";
+const API_KEY = "AIzaSyAjWn2EYuE6aDXLnqQarEeqE13zShHkcE8";
 const MODEL_NAME = "gemini-2.5-flash";
 
 const data = JSON.stringify({
