@@ -366,6 +366,56 @@ button {
     margin-top: 0.3rem;
 }
 
+/* Lotto Section */
+.lotto-section {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(138, 43, 226, 0.05));
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 3.5rem;
+}
+
+.lotto-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+}
+
+.lotto-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.lotto-container span {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lotto-container span:hover {
+    transform: scale(1.15) translateY(-5px);
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+}
+
 #retry-btn {
     width: 100%;
     padding: 1.25rem;

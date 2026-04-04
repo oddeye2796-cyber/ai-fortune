@@ -95,14 +95,19 @@ class FortuneApp {
             "money": "금전운 상세 내용",
             "work": "직업/학업운 상세 내용",
             "health": "건강운 상세 내용",
-            "aiAdvice": "동서양을 복합적으로 분석한 깊이 있는 조언 (3-4문장)",
+            "aiAdvice": "동서양을 복합적으로 분석한 깊이 있는 조언 (작성 시 사용자의 생년월일 특성에 기반하여 결과가 일관되게 작성될 수 있도록 주의하세요)",
             "orientalDetail": "동양 철학(사주, 오행 등) 관점의 분석 내용",
             "westernDetail": "서양 점성술/타로 관점의 분석 내용",
             "luckyNum": "숫자 1개",
             "luckyColor": "색상 이름",
-            "luckyDir": "동/서/남/북 등 방향"
+            "luckyDir": "동/서/남/북 등 방향",
+            "lottoNumbers": [1, 2, 3, 4, 5, 6] (1~45 사이의 숫자 6개, 사용자의 생년월일 기운에 따른 고정적인 추천 조합)
         }
-        한국어로 답변하세요.
+        
+        [특별 지침]
+        1. 결과의 일관성이 매우 중요합니다. 동일한 생년월일에 대해 매번 다른 결과가 나오지 않도록, 데이터에 기반한 논리적인 분석을 제공하세요.
+        2. 로또 번호는 사용자의 생년월일 에너지를 분석하여 결정된 고유의 행운 번호여야 합니다.
+        3. 한국어로 답변하세요.
         `;
     }
 
@@ -172,6 +177,12 @@ class FortuneApp {
         document.getElementById('lucky-num').innerText = result.luckyNum;
         document.getElementById('lucky-color').innerText = result.luckyColor;
         document.getElementById('lucky-dir').innerText = result.luckyDir;
+
+        // 로또 번호 렌더링
+        const lottoContainer = document.getElementById('lotto-numbers');
+        if (lottoContainer && result.lottoNumbers) {
+            lottoContainer.innerHTML = result.lottoNumbers.map(num => `<span>${num}</span>`).join('');
+        }
 
         this.switchTab('total');
     }
