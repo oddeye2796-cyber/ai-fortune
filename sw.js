@@ -1,43 +1,39 @@
-const CACHE_NAME = 'ai-fortune-v4';
+const CACHE_NAME = 'ai-fortune-v5';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './app_v2.js',
   './fortune-engine.js',
-  './manifest.json',
-  'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css'
+  './manifest.json'
 ];
 
-// 설치 단계: 새로운 파일들을 캐싱
+// 설치: 즉시 활성화
 self.addEventListener('install', event => {
-  self.skipWaiting(); // 새로운 서비스 워커가 즉시 활성화되도록 강제
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS);
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
 });
 
-// 활성화 단계: 이전 버전의 캐시를 삭제
+// 활성화: 이전 캐시 전부 삭제
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
   );
 });
 
+// 네트워크 우선 전략 (항상 최신 파일 로드)
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    fetch(event.request)
+      .then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
