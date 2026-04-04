@@ -3,7 +3,7 @@
  * Features: Fortune Analysis, Cosmic Dialogue, Compatibility, Talisman, Share Card
  */
 
-const API_KEY = "AIzaSyAjWn2EYuE6aDXLnqQarEeqE13zShHkcE8";
+const API_KEY = "AIzaSyAltMBUSamTWc0A3ORMLoxfL4UMNIpN5E0";
 const MODEL_NAME = "gemini-2.5-flash";
 
 class FortuneApp {
