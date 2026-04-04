@@ -128,8 +128,8 @@ input:focus, select:focus {
 }
 
 select option {
-    background-color: var(--bg-card);
-    color: white;
+    background-color: #1a1a1a !important; /* 더 짙은 회색으로 고정 */
+    color: #ffffff !important;           /* 흰색 글씨 고정 */
 }
 
 .form-row {
