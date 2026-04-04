@@ -3,7 +3,7 @@
  */
 
 const API_KEY = "AIzaSyBTKDtIvroEL3d5kMWdvBvVYN-1YFb9QKM";
-const MODEL_NAME = "gemini-2.0-flash";
+const MODEL_NAME = "gemini-2.5-flash";
 
 class FortuneApp {
     constructor() {
@@ -130,14 +130,19 @@ class FortuneApp {
         
         // JSON 추출 (마크다운 백틱 제거 및 유연한 파싱)
         try {
-            const jsonText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+            // 정규식을 사용하여 { ... } 부분을 찾아 추출
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+                console.error("No JSON found in response:", text);
+                throw new Error("응답에서 데이터를 찾을 수 없습니다.");
+            }
+            
+            const jsonText = jsonMatch[0].trim();
+            console.log("Extracted JSON:", jsonText);
             return JSON.parse(jsonText);
         } catch (e) {
-            console.error("JSON Parse Error. Raw Text:", text);
-            // 만약 정규식으로 다시 시도
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
-            if (jsonMatch) return JSON.parse(jsonMatch[0]);
-            throw e;
+            console.error("JSON Parsing/Extraction Error:", e, "Raw Text:", text);
+            throw new Error("분석 데이터를 처리하는 중 오류가 발생했습니다.");
         }
     }
 
