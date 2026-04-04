@@ -262,8 +262,11 @@ class FortuneApp {
                     contents: [{ parts: [{ text: chatPrompt }] }]
                 })
             });
-
-            if (!response.ok) throw new Error('API 호출 실패');
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Chat API Error Detail:", errorData);
+                throw new Error(`API request failed: ${response.status}`);
+            }
             
             const data = await response.json();
             const reply = data.candidates[0].content.parts[0].text;
