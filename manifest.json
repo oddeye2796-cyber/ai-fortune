@@ -1,0 +1,20 @@
+{
+  "name": "AI FORTUNE",
+  "short_name": "AI Fortune",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/ios-filled/192/ffffff/star.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/ios-filled/512/ffffff/star.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
