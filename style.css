@@ -573,4 +573,211 @@ footer {
     .form-row, .grid-container { grid-template-columns: 1fr; }
     .score-value { font-size: 4.5rem; }
     .lucky-items { flex-direction: column; gap: 1.5rem; }
+    .compat-pair { flex-direction: column; }
+    .compat-heart { transform: none; font-size: 2rem; }
+    .share-card-wrapper canvas { width: 100%; height: auto; }
+    .mode-nav { flex-direction: column; gap: 0.5rem; }
+    .mode-btn { width: 100%; }
+}
+
+/* ========== Mode Navigation ========== */
+.mode-nav {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.mode-btn {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.02em;
+}
+
+.mode-btn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.mode-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+}
+
+/* ========== Compatibility Section ========== */
+.compat-pair {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.compat-person {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.25rem;
+}
+
+.person-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.compat-heart {
+    font-size: 2.5rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.compat-header {
+    text-align: center;
+}
+
+.compat-names {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.compat-heart-icon {
+    font-size: 1.8rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+.compat-score {
+    background: linear-gradient(135deg, #ff6b9d, #c44dff) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.compat-summary-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+#compat-retry-btn {
+    width: 100%;
+    padding: 1.25rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 1.5rem;
+}
+
+#compat-retry-btn:hover {
+    border-color: #fff;
+    color: #fff;
+}
+
+/* ========== Talisman Section ========== */
+.talisman-section, .share-section {
+    margin-top: 2.5rem;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.talisman-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+#talisman-canvas {
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.3), 0 0 80px rgba(138, 43, 226, 0.1);
+    transition: transform 0.3s;
+}
+
+#talisman-canvas:hover {
+    transform: scale(1.02);
+}
+
+.action-btn {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0.25rem;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.action-btn.accent {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.action-btn.accent:hover {
+    background: #9d3fe8;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+}
+
+/* ========== Share Card Section ========== */
+.share-card-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+#share-canvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }

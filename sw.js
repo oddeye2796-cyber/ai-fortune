@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ai-fortune-v3';
+const CACHE_NAME = 'ai-fortune-v4';
 const ASSETS = [
   './',
   './index.html',

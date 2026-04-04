@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI FORTUNE | 프리미엄 AI 운세</title>
-    <meta name="description" content="동양의 사주와 서양의 점성술을 AI가 복합 분석하여 당신의 오늘을 알려드립니다.">
+    <title>AI FORTUNE | 프리미엄 AI 운세 · 궁합</title>
+    <meta name="description" content="동양의 사주와 서양의 점성술을 AI가 복합 분석하여 당신의 오늘을 알려드립니다. 궁합 분석, 행운의 부적까지.">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#0a0a0a">
@@ -24,7 +24,14 @@
             <p class="subtitle">PREMIUM COSMIC ANALYSIS</p>
         </header>
 
+        <!-- 모드 네비게이션 -->
+        <nav class="mode-nav">
+            <button class="mode-btn active" data-mode="fortune">🔮 오늘의 운세</button>
+            <button class="mode-btn" data-mode="compat">💕 궁합 분석</button>
+        </nav>
+
         <main id="app">
+            <!-- ==================== 운세 분석 모드 ==================== -->
             <!-- 입력 섹션 -->
             <section id="input-section" class="card">
                 <h2>PERSONAL INFO</h2>
@@ -183,8 +190,30 @@
                 <div class="lotto-section">
                     <h3 class="lotto-title">LUCKY LOTTO NUMBERS</h3>
                     <div class="lotto-container" id="lotto-numbers">
-                        <!-- 6개의 숫자가 여기에 렌더링됩니다 -->
                         <span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span>
+                    </div>
+                </div>
+
+                <!-- 행운의 부적 (Talisman) -->
+                <div class="talisman-section">
+                    <h3 class="section-title">🪬 오늘의 디지털 부적</h3>
+                    <p class="guide-text">당신의 기운을 담은 행운의 부적입니다. 저장하여 간직하세요.</p>
+                    <div class="talisman-wrapper">
+                        <canvas id="talisman-canvas" width="320" height="420"></canvas>
+                    </div>
+                    <button id="save-talisman-btn" class="action-btn">📥 부적 저장하기</button>
+                </div>
+
+                <!-- SNS 공유 카드 -->
+                <div class="share-section">
+                    <h3 class="section-title">📤 SNS 공유 카드</h3>
+                    <p class="guide-text">나의 운세를 친구들에게 공유하세요!</p>
+                    <div class="share-card-wrapper">
+                        <canvas id="share-canvas" width="540" height="960"></canvas>
+                    </div>
+                    <div class="share-buttons">
+                        <button id="download-share-btn" class="action-btn">📥 이미지 저장</button>
+                        <button id="copy-share-btn" class="action-btn accent">📋 클립보드 복사</button>
                     </div>
                 </div>
 
@@ -203,6 +232,112 @@
                 </div>
 
                 <button id="retry-btn">다시 입력하기</button>
+            </section>
+
+            <!-- ==================== 궁합 분석 모드 ==================== -->
+            <section id="compat-input-section" class="card hidden">
+                <h2>💕 COMPATIBILITY</h2>
+                <p class="guide-text">두 사람의 사주·별자리 궁합을 AI가 분석합니다.</p>
+
+                <form id="compat-form">
+                    <div class="compat-pair">
+                        <div class="compat-person">
+                            <h3 class="person-label">👤 첫 번째 사람</h3>
+                            <div class="form-group">
+                                <label for="compatName1">이름</label>
+                                <input type="text" id="compatName1" placeholder="이름" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="compatBirth1">생년월일</label>
+                                <input type="date" id="compatBirth1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>성별</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="compatGender1" value="male" checked> 남</label>
+                                    <label><input type="radio" name="compatGender1" value="female"> 여</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="compat-heart">💘</div>
+                        <div class="compat-person">
+                            <h3 class="person-label">👤 두 번째 사람</h3>
+                            <div class="form-group">
+                                <label for="compatName2">이름</label>
+                                <input type="text" id="compatName2" placeholder="이름" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="compatBirth2">생년월일</label>
+                                <input type="date" id="compatBirth2" required>
+                            </div>
+                            <div class="form-group">
+                                <label>성별</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="compatGender2" value="male"> 남</label>
+                                    <label><input type="radio" name="compatGender2" value="female" checked> 여</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="glow-on-hover">💕 궁합 분석 시작</button>
+                </form>
+            </section>
+
+            <!-- 궁합 로딩 -->
+            <section id="compat-loading-section" class="hidden">
+                <div class="loader-content">
+                    <div class="orbit">
+                        <div class="planet"></div>
+                    </div>
+                    <h3>두 분의 인연을 읽는 중</h3>
+                    <p>사주와 별자리의 궁합을 분석하고 있습니다.</p>
+                </div>
+            </section>
+
+            <!-- 궁합 결과 -->
+            <section id="compat-result-section" class="hidden">
+                <div class="result-header compat-header">
+                    <div class="compat-names">
+                        <span id="compat-res-name1">사람1</span>
+                        <span class="compat-heart-icon">💘</span>
+                        <span id="compat-res-name2">사람2</span>
+                    </div>
+                    <div class="score-container">
+                        <span class="score-label">COMPATIBILITY SCORE</span>
+                        <div class="score-value compat-score" id="compatScore">00</div>
+                    </div>
+                    <p id="compat-summary" class="compat-summary-text">궁합 분석을 완료했습니다.</p>
+                </div>
+
+                <div class="grid-container">
+                    <div class="info-card">
+                        <img src="https://img.icons8.com/ios/50/ffffff/heart-with-pulse.png" alt="애정">
+                        <h3>연애 궁합</h3>
+                        <p id="compat-love">...</p>
+                    </div>
+                    <div class="info-card">
+                        <img src="https://img.icons8.com/ios/50/ffffff/handshake.png" alt="성격">
+                        <h3>성격 궁합</h3>
+                        <p id="compat-personality">...</p>
+                    </div>
+                    <div class="info-card">
+                        <img src="https://img.icons8.com/ios/50/ffffff/communication.png" alt="소통">
+                        <h3>소통 궁합</h3>
+                        <p id="compat-communication">...</p>
+                    </div>
+                    <div class="info-card">
+                        <img src="https://img.icons8.com/ios/50/ffffff/future.png" alt="미래">
+                        <h3>미래 전망</h3>
+                        <p id="compat-future">...</p>
+                    </div>
+                </div>
+
+                <div class="ai-box">
+                    <h3>💕 AI 궁합 종합 조언</h3>
+                    <div id="compat-advice" class="typewriter">...</div>
+                </div>
+
+                <button id="compat-retry-btn">다시 분석하기</button>
             </section>
         </main>
 
