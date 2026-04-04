@@ -14,6 +14,15 @@ class FortuneApp {
         this.tabBtns = document.querySelectorAll('.tab-btn');
         this.tabContents = document.querySelectorAll('.tab-content');
         this.retryBtn = document.getElementById('retry-btn');
+        
+        // Chat elements
+        this.chatInput = document.getElementById('chat-input');
+        this.chatSendBtn = document.getElementById('chat-send-btn');
+        this.chatMessages = document.getElementById('chat-messages');
+
+        // Context storage
+        this.lastAnalysisResult = null;
+        this.lastFormData = null;
 
         this.initEventListeners();
     }
@@ -34,6 +43,12 @@ class FortuneApp {
         this.retryBtn.addEventListener('click', () => {
             this.showSection('input');
         });
+
+        // Chat listeners
+        this.chatSendBtn.addEventListener('click', () => this.handleChat());
+        this.chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.handleChat();
+        });
     }
 
     async startAnalysis() {
@@ -51,6 +66,12 @@ class FortuneApp {
             const analysisData = this.calculateBaseData(formData);
             const prompt = this.generatePrompt(formData, analysisData);
             const result = await this.callGemini(prompt);
+            
+            // Store for chat context
+            this.lastAnalysisResult = result;
+            this.lastFormData = formData;
+            this.resetChat();
+
             this.renderResult(formData.name, analysisData, result);
             this.showSection('result');
         } catch (error) {
@@ -206,6 +227,74 @@ class FortuneApp {
         
         if (activeBtn) activeBtn.classList.add('active');
         if (activeContent) activeContent.classList.remove('hidden');
+    }
+
+    // --- Chat Methods ---
+    async handleChat() {
+        const query = this.chatInput.value.trim();
+        if (!query || !this.lastAnalysisResult) return;
+
+        this.addChatMessage('user', query);
+        this.chatInput.value = '';
+        
+        const loadingId = 'loading-' + Date.now();
+        this.addChatMessage('ai', '우주의 기운에 물어보고 있습니다...', loadingId);
+
+        try {
+            const chatPrompt = `
+                당신은 운세 전문가입니다. 이전에 다음과 같은 운세 결과를 분석했습니다:
+                [분석 결과 요약]: ${this.lastAnalysisResult.summary}
+                [상세 내용]: ${this.lastAnalysisResult.aiAdvice}
+                
+                사용자의 이름은 ${this.lastFormData.name}입니다.
+                사용자가 위 결과에 대해 추가 질문을 했습니다: "${query}"
+                
+                위 분석 결과를 바탕으로 친절하고 깊이 있게 답변해주세요. 
+                답변은 3-4문장 이내로 간결하면서도 통찰력 있게 작성하세요.
+                한국어로 답변하세요.
+            `;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: chatPrompt }] }]
+                })
+            });
+
+            if (!response.ok) throw new Error('API 호출 실패');
+            
+            const data = await response.json();
+            const reply = data.candidates[0].content.parts[0].text;
+            
+            this.updateChatMessage(loadingId, reply);
+        } catch (error) {
+            console.error("Chat Error:", error);
+            this.updateChatMessage(loadingId, "죄송합니다. 우주의 기운과 연결이 잠시 끊겼습니다. 다시 질문해 주세요.");
+        }
+    }
+
+    addChatMessage(role, text, id = null) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${role}-message`;
+        if (id) msgDiv.id = id;
+        msgDiv.innerText = text;
+        this.chatMessages.appendChild(msgDiv);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+
+    updateChatMessage(id, text) {
+        const msgDiv = document.getElementById(id);
+        if (msgDiv) {
+            msgDiv.innerText = text;
+            this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+        }
+    }
+
+    resetChat() {
+        this.chatMessages.innerHTML = '<div class="message ai-message">분석된 결과에 대해 궁금한 점이 있으신가요? 편하게 물어보세요!</div>';
+        this.chatInput.value = '';
     }
 }
 

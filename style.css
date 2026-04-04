@@ -416,6 +416,121 @@ button {
     box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
 }
 
+/* Chat Section */
+.chat-section {
+    background: rgba(255, 255, 255, 0.03);
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.chat-section h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.chat-messages {
+    max-height: 250px;
+    overflow-y: auto;
+    margin: 1.5rem 0;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Custom Scrollbar for Chat */
+.chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.message {
+    padding: 0.8rem 1.2rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: 85%;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.ai-message {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e0e0e0;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.user-message {
+    background: var(--primary);
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+}
+
+.chat-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#chat-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+#chat-input:focus {
+    outline: none;
+}
+
+#chat-send-btn {
+    background: var(--primary);
+    border: none;
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#chat-send-btn:hover {
+    transform: scale(1.05);
+    background: #9d3fe8;
+}
+
+#chat-send-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.typing-indicator {
+    padding: 0.5rem 1rem;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--accent);
+    opacity: 0.7;
+}
+
 #retry-btn {
     width: 100%;
     padding: 1.25rem;
