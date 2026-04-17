@@ -3,7 +3,7 @@
  * Features: Fortune Analysis, Cosmic Dialogue, Compatibility, Talisman, Share Card
  */
 
-const API_KEY = "AIzaSyCVGwd8u910y4RGfYxBHGttlP0N98ITHrg";
+// API_KEY는 config.js에서 로드됩니다 (보안을 위해 분리)
 const MODEL_NAME = "gemini-2.5-flash";
 
 class FortuneApp {
