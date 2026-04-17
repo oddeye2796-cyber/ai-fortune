@@ -190,46 +190,70 @@ class FortuneApp {
 
     async callGemini(prompt) {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }]
-            })
-        });
+        const maxRetries = 3;
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error("API Error Detail:", errorData);
-            throw new Error(`API request failed: ${response.status}`);
-        }
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
+            });
 
-        const data = await response.json();
-        const text = data.candidates[0].content.parts[0].text;
+            if (response.status === 503 || response.status === 429) {
+                console.warn(`⚠️ API ${response.status} 에러 (${attempt}/${maxRetries}회 시도)`);
+                if (attempt < maxRetries) {
+                    await new Promise(r => setTimeout(r, attempt * 2000));
+                    continue;
+                }
+            }
 
-        try {
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) throw new Error("응답에서 데이터를 찾을 수 없습니다.");
-            return JSON.parse(jsonMatch[0].trim());
-        } catch (e) {
-            console.error("JSON Parsing Error:", e, "Raw:", text);
-            throw new Error("분석 데이터를 처리하는 중 오류가 발생했습니다.");
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("API Error Detail:", errorData);
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const text = data.candidates[0].content.parts[0].text;
+
+            try {
+                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) throw new Error("응답에서 데이터를 찾을 수 없습니다.");
+                return JSON.parse(jsonMatch[0].trim());
+            } catch (e) {
+                console.error("JSON Parsing Error:", e, "Raw:", text);
+                throw new Error("분석 데이터를 처리하는 중 오류가 발생했습니다.");
+            }
         }
     }
 
     async callGeminiText(prompt) {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }]
-            })
-        });
+        const maxRetries = 3;
 
-        if (!response.ok) throw new Error(`API failed: ${response.status}`);
-        const data = await response.json();
-        return data.candidates[0].content.parts[0].text;
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
+            });
+
+            if (response.status === 503 || response.status === 429) {
+                console.warn(`⚠️ API ${response.status} 에러 (${attempt}/${maxRetries}회 시도)`);
+                if (attempt < maxRetries) {
+                    await new Promise(r => setTimeout(r, attempt * 2000));
+                    continue;
+                }
+            }
+
+            if (!response.ok) throw new Error(`API failed: ${response.status}`);
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+        }
     }
 
     renderResult(userName, analysisData, result) {
